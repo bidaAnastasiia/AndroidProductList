@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Product List</string>
-    <string name="buttonGoToList">Go to product list</string>
-    <string name="buttonRemove">Remove</string>
-    <string name="fab_content_desc">Add product</string>
-</resources>
