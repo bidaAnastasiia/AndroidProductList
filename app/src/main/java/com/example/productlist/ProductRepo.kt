@@ -4,19 +4,23 @@ import androidx.lifecycle.LiveData
 
 class ProductRepo(private val productDao: ProductDao) {
     val allProducts: LiveData<List<Product>> = productDao.getProducts()
-    fun insert(product: Product){
-        productDao.insert(product)
+    suspend fun insert(product: Product):Long {
+      return  productDao.insert(product)
     }
 
-    fun delete(product: Product){
+    suspend fun delete(product: Product){
         productDao.delete(product)
     }
 
-    fun deleteAll(){
+    suspend fun deleteAll(){
         productDao.deleteAll()
     }
 
-    fun update(product: Product){
+    suspend fun update(product: Product){
         productDao.update(product)
+    }
+
+    suspend fun findById(id:Long):Product{
+        return productDao.findById(id)
     }
 }

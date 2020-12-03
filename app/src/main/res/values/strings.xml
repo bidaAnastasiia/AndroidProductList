@@ -3,4 +3,7 @@
     <string name="buttonGoToList">Go to product list</string>
     <string name="buttonRemove">Remove</string>
     <string name="fab_content_desc">Add product</string>
+    <string name="broadcast">com.example.productlist.MY_BROADCAST</string>
+    <string name="channel_id">channel_PA</string>
+    <string name="channel_name">Product_PA</string>
 </resources>

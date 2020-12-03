@@ -9,11 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProductList">
-        <activity android:name=".AddElementActivity"
-            android:parentActivityName=".ProductListActivity" />
-        <activity android:name=".ProductListActivity"
+
+
+        <activity
+            android:name=".AddElementActivity"
+            android:parentActivityName=".ProductListActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".ProductListActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".OptionsActivity"
+        <activity
+            android:name=".OptionsActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"

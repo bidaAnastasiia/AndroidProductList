@@ -1,11 +1,10 @@
 package com.example.productlist
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -17,11 +16,13 @@ import com.example.productlist.databinding.AddElementActivityBinding
 import com.example.productlist.databinding.ProductListActivityBinding
 import kotlinx.android.synthetic.main.add_element_activity.*
 import kotlinx.android.synthetic.main.list_element.view.*
+import kotlinx.coroutines.runBlocking
 
 class AddElementActivity : AppCompatActivity() {
     private lateinit var sp: SharedPreferences
     lateinit var layout: ConstraintLayout
     lateinit var listButton: ArrayList<Button>
+    private var id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,21 +35,6 @@ class AddElementActivity : AppCompatActivity() {
         listButton.addAll(arrayListOf(binding.bAddProduct,binding.bEdit,binding.bRemove))
         sp = this.getSharedPreferences("mySharedPrederences", Context.MODE_PRIVATE)
 
-        val keyvalue = intent.getStringExtra("key")
-        var current_product = intent.getParcelableExtra<Product>("current")
-        if (keyvalue.equals("add"))
-            bAddProduct.visibility = View.VISIBLE
-        else  {
-            bEdit.visibility = View.VISIBLE
-            bRemove.visibility = View.VISIBLE
-            if (current_product != null) {
-                binding.etName.setText(current_product.name)
-                binding.etPrice.setText(current_product.price)
-                binding.etAmount.setText(current_product.amount.toString())
-                binding.cbIsBought.isChecked = current_product.isBought
-            }
-        }
-
         val productViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
@@ -60,6 +46,32 @@ class AddElementActivity : AppCompatActivity() {
             }
         })
         binding1.rv1.adapter = MyListAdapter(this, productViewModel)
+
+        val keyvalue = intent.getStringExtra("key")
+        var current_product = intent.getParcelableExtra<Product>("current")
+        if (keyvalue.equals("add"))
+            bAddProduct.visibility = View.VISIBLE
+        else  {
+            bEdit.visibility = View.VISIBLE
+            bRemove.visibility = View.VISIBLE
+            if (keyvalue.equals("edit")) {
+                current_product =
+                    productViewModel.findById(intent.getLongExtra("added_productId", 0))
+            }
+            if (current_product != null)
+            {
+                binding.etName.setText(current_product?.name)
+                binding.etPrice.setText(current_product?.price)
+                binding.etAmount.setText(current_product?.amount.toString())
+                binding.cbIsBought.isChecked = current_product!!.isBought
+            }else
+                binding.etName.setText(intent.getLongExtra("added_productId", 0).toString())
+        }
+
+        val broadcast = Intent()
+        broadcast.action = getString(R.string.broadcast)
+        broadcast.component = ComponentName("com.example.mybroadcastreceiver","com.example.mybroadcastreceiver.ProductReceiver")
+
         binding.bAddProduct.setOnClickListener {
             val n = binding.etName.text.toString()
             val p= binding.etPrice.text.toString()
@@ -72,9 +84,14 @@ class AddElementActivity : AppCompatActivity() {
                     amount = a.toInt(),
                     isBought = binding.cbIsBought.isChecked
                 )
-                productViewModel.insert(product)
+                val prId = productViewModel.insert(product)
+                broadcast.putExtra("channel_id",getString(R.string.channel_id))
+                broadcast.putExtra("channel_name",getString(R.string.channel_name))
+                broadcast.putExtra("id",id++)
+                broadcast.putExtra("product_name",product.name)
+                broadcast.putExtra("added_productId",prId)
+                sendBroadcast(broadcast)
             }
-
             val intent = Intent(baseContext, ProductListActivity::class.java)
             startActivity(intent)
         }

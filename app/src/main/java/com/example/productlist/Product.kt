@@ -21,6 +21,7 @@ class Product(@PrimaryKey(autoGenerate = true) var id: Long = 0,
         parcel.readByte() != 0.toByte()
     )
 
+
 //    fun fromContentValues(values: ContentValues?){
 //        var product :Product
 //        if (values != null) {
