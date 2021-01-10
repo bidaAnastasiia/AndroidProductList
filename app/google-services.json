@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "848960367613",
+    "project_id": "productlist-e3add",
+    "storage_bucket": "productlist-e3add.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848960367613:android:c0031a0e3d879d3a3f0794",
+        "android_client_info": {
+          "package_name": "com.example.productlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848960367613-9fceo40updqip2jaq0t324g3alb0v9gt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6jGyvlcmvUQo9XGFpKZ7VMD-eFtOTh7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848960367613-9fceo40updqip2jaq0t324g3alb0v9gt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
