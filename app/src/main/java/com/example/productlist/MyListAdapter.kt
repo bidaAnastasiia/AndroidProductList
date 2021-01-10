@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.productlist.databinding.ListElementBinding
+import com.example.productlist.product.Product
+import com.example.productlist.product.ProductViewModel
 
 class MyListAdapter (val context: Context,private val viewModel: ProductViewModel) :
     RecyclerView.Adapter<MyListAdapter.ViewHolder>() {

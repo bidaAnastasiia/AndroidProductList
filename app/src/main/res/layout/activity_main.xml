@@ -15,14 +15,12 @@
             android:id="@+id/buttonGoToOptions"
             android:layout_width="209dp"
             android:layout_height="53dp"
-            android:layout_marginStart="106dp"
-            android:layout_marginLeft="106dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="300dp"
+            android:layout_marginStart="101dp"
+            android:layout_marginLeft="101dp"
+            android:layout_marginTop="20dp"
             android:onClick="clickGoToOptions"
             android:text="Options"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonGoToList" />
 
@@ -30,9 +28,9 @@
             android:id="@+id/buttonGoToList"
             android:layout_width="207dp"
             android:layout_height="51dp"
-            android:layout_marginStart="106dp"
-            android:layout_marginLeft="106dp"
-            android:layout_marginTop="301dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="250dp"
             android:layout_marginBottom="15dp"
             android:onClick="clickGoToList"
             android:text="@string/buttonGoToList"
@@ -40,6 +38,18 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonGoToOptions"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonGoToMap"
+            android:layout_width="207dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:onClick="clickGoToMap"
+            android:text="Shops"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonGoToOptions" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

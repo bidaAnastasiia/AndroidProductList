@@ -9,14 +9,15 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.productlist.databinding.ProductListActivityBinding
-import kotlinx.android.synthetic.main.list_element.*
-import kotlinx.android.synthetic.main.list_element.view.*
+import com.example.productlist.product.MyAdapter
+import com.example.productlist.product.Product
 import kotlinx.android.synthetic.main.product_list_activity.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductListActivity : AppCompatActivity() {
     private lateinit var sp: SharedPreferences
@@ -32,6 +33,8 @@ class ProductListActivity : AppCompatActivity() {
         listButton = ArrayList()
         sp = this.getSharedPreferences("mySharedPrederences", Context.MODE_PRIVATE)
 
+
+
         binding.rv1.layoutManager = LinearLayoutManager(baseContext)
         binding.rv1.addItemDecoration(
             DividerItemDecoration(
@@ -40,22 +43,29 @@ class ProductListActivity : AppCompatActivity() {
             )
         )
 
-        val productViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )
-            .get(ProductViewModel::class.java)
-        productViewModel.allProducts.observe(this, Observer { products ->
-            products?.let {
-                (binding.rv1.adapter as MyListAdapter).setProducts(it)
-            }
-        })
-        binding.rv1.adapter = MyListAdapter(this, productViewModel)
+        val list = arrayListOf<Product>()
+        binding.rv1.adapter =
+            MyAdapter(this, list)
+
+//        val productViewModel = ViewModelProvider(
+//            this,
+//            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+//        )
+//            .get(ProductViewModel::class.java)
+//        productViewModel.allProducts.observe(this, Observer { products ->
+//            products?.let {
+//                (binding.rv1.adapter as MyListAdapter).setProducts(it)
+//            }
+//        })
+//        binding.rv1.adapter = MyListAdapter(this, productViewModel)
 
         fAButtonAdd.setOnClickListener {
-            val intent = Intent(baseContext, AddElementActivity::class.java)
-            intent.putExtra("key", "add");
-            startActivity(intent)
+            CoroutineScope(Dispatchers.IO).launch {
+                val intent = Intent(baseContext, AddElementActivity::class.java)
+                intent.putExtra("key", "add");
+                finish()
+                startActivity(intent)
+            }
         }
 
     }

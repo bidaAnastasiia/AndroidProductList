@@ -1,4 +1,4 @@
-package com.example.productlist
+package com.example.productlist.product
 
 import androidx.lifecycle.LiveData
 
@@ -20,7 +20,7 @@ class ProductRepo(private val productDao: ProductDao) {
         productDao.update(product)
     }
 
-    suspend fun findById(id:Long):Product{
+    suspend fun findById(id:Long): Product {
         return productDao.findById(id)
     }
 }

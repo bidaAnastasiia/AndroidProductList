@@ -1,4 +1,4 @@
-package com.example.productlist
+package com.example.productlist.product
 
 import android.content.Context
 import androidx.room.Database
@@ -12,7 +12,7 @@ abstract class ProductDB: RoomDatabase() {
     companion object{
         private var instance: ProductDB? = null
 
-        fun getdatabase(context: Context):ProductDB{
+        fun getdatabase(context: Context): ProductDB {
             if(instance != null)
                 return instance as ProductDB
             instance = Room.databaseBuilder(context.applicationContext,

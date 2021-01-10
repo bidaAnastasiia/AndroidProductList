@@ -1,4 +1,4 @@
-package com.example.productlist
+package com.example.productlist.product
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -32,7 +32,7 @@ class ProductViewModel(app: Application) : AndroidViewModel(app) {
          CoroutineScope(IO).launch { repo.update(product)}
     }
 
-     fun findById(id:Long) :Product = runBlocking { return@runBlocking repo.findById(id) }
+     fun findById(id:Long) : Product = runBlocking { return@runBlocking repo.findById(id) }
 
 
 }

@@ -6,4 +6,5 @@
     <string name="broadcast">com.example.productlist.MY_BROADCAST</string>
     <string name="channel_id">channel_PA</string>
     <string name="channel_name">Product_PA</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

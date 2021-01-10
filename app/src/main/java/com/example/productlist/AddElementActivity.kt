@@ -7,16 +7,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.productlist.databinding.AddElementActivityBinding
 import com.example.productlist.databinding.ProductListActivityBinding
+import com.example.productlist.product.Product
+import com.example.productlist.product.ProductViewModel
 import kotlinx.android.synthetic.main.add_element_activity.*
-import kotlinx.android.synthetic.main.list_element.view.*
-import kotlinx.coroutines.runBlocking
+import com.google.firebase.database.FirebaseDatabase
 
 class AddElementActivity : AppCompatActivity() {
     private lateinit var sp: SharedPreferences
@@ -48,16 +48,19 @@ class AddElementActivity : AppCompatActivity() {
         binding1.rv1.adapter = MyListAdapter(this, productViewModel)
 
         val keyvalue = intent.getStringExtra("key")
+        val current_key = intent.getStringExtra("currentKey")
+        Log.i("readDB", "$current_key")
         var current_product = intent.getParcelableExtra<Product>("current")
+
         if (keyvalue.equals("add"))
             bAddProduct.visibility = View.VISIBLE
         else  {
             bEdit.visibility = View.VISIBLE
             bRemove.visibility = View.VISIBLE
-            if (keyvalue.equals("edit")) {
-                current_product =
-                    productViewModel.findById(intent.getLongExtra("added_productId", 0))
-            }
+//            if (keyvalue.equals("edit")) {
+//                current_product =
+//                    productViewModel.findById(intent.getLongExtra("added_productId", 0))
+//            }
             if (current_product != null)
             {
                 binding.etName.setText(current_product?.name)
@@ -72,6 +75,9 @@ class AddElementActivity : AppCompatActivity() {
         broadcast.action = getString(R.string.broadcast)
         broadcast.component = ComponentName("com.example.mybroadcastreceiver","com.example.mybroadcastreceiver.ProductReceiver")
 
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("Product")
+
         binding.bAddProduct.setOnClickListener {
             val n = binding.etName.text.toString()
             val p= binding.etPrice.text.toString()
@@ -84,15 +90,17 @@ class AddElementActivity : AppCompatActivity() {
                     amount = a.toInt(),
                     isBought = binding.cbIsBought.isChecked
                 )
-                val prId = productViewModel.insert(product)
-                broadcast.putExtra("channel_id",getString(R.string.channel_id))
-                broadcast.putExtra("channel_name",getString(R.string.channel_name))
-                broadcast.putExtra("id",id++)
-                broadcast.putExtra("product_name",product.name)
-                broadcast.putExtra("added_productId",prId)
-                sendBroadcast(broadcast)
+                ref.push().setValue(product)
+//                val prId = productViewModel.insert(product)
+//                broadcast.putExtra("channel_id",getString(R.string.channel_id))
+//                broadcast.putExtra("channel_name",getString(R.string.channel_name))
+//                broadcast.putExtra("id",id++)
+//                broadcast.putExtra("product_name",product.name)
+//                broadcast.putExtra("added_productId",prId)
+//                sendBroadcast(broadcast)
             }
             val intent = Intent(baseContext, ProductListActivity::class.java)
+            finish()
             startActivity(intent)
         }
 
@@ -102,26 +110,27 @@ class AddElementActivity : AppCompatActivity() {
                 current_product.price = binding.etPrice.text.toString()
                 current_product.amount = binding.etAmount.text.toString().toInt()
                 current_product.isBought = binding.cbIsBought.isChecked
-                productViewModel.update(current_product)
+
+                var mm = mutableMapOf<String, Product>(((current_key to current_product) as Pair<String, Product>))
+                ref.updateChildren(mm as Map<String, Any>)
             }
+
             val intent = Intent(baseContext, ProductListActivity::class.java)
+            finish()
             startActivity(intent)
         }
 
         binding.bRemove.setOnClickListener {
             if (current_product != null) {
-                productViewModel.delete(current_product)
+                val userRef = database.getReference("Product/" + current_key)
+                //userRef.removeValue()
+                ref.child(current_key!!).removeValue()
             }
             val intent = Intent(baseContext, ProductListActivity::class.java)
+            finish()
             startActivity(intent)
         }
 
-        binding.bRemove.setOnLongClickListener{
-            productViewModel.deleteAll()
-            val intent = Intent(baseContext, ProductListActivity::class.java)
-            startActivity(intent)
-            true
-        }
     }
 
     override fun onStart() {

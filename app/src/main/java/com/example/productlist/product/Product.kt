@@ -1,11 +1,9 @@
-package com.example.productlist
+package com.example.productlist.product
 
-import android.content.ContentValues
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
 
 @Entity
 class Product(@PrimaryKey(autoGenerate = true) var id: Long = 0,
